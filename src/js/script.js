@@ -3,18 +3,13 @@ var Database = {
 	data: []
 };
 
-
 function loadDataSource() {
 
-	
-	displayData( Database.data );
+	let storedData = localStorage.getItem(Database.keyName);
+
+	let parsedData = JSON.parse(storedData);
+
+	Database.data = parsedData.response;
+
+	displayData(Database.data);
 }
-
-
-
-function displayData(dataArray) {
-
-
-}
-
-loadDataSource();
