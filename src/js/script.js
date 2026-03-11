@@ -5,71 +5,54 @@ var Database = {
 
 function loadDataSource() {
 
-	let storedData = localStorage.getItem(Database.keyName);
+	let data = localStorage.getItem(Database.keyName);
 
-	let parsedData = JSON.parse(storedData);
+	let parsed = JSON.parse(data);
 
-	Database.data = parsedData.response;
+	Database.data = parsed.response;
 
 	displayData(Database.data);
 }
+
 function displayData(dataArray) {
 
-	let container = document.querySelector(".row");
+	let row = document.querySelector(".row");
 
-	dataArray.forEach(function(mutant) {
-
-		let powersList = "";
-		mutant.powers.forEach(function(power){
-			powersList += `<li>${power}</li>`;
-		});
-
-		let affiliationList = "";
-		mutant.affiliation.forEach(function(team){
-			affiliationList += `<li class="list-inline-item badge bg-primary">${team}</li>`;
-		});
+	dataArray.forEach(function(m) {
 
 		let html = `
 		<div class="col">
 			<div class="card shadow-lg h-100">
-				<img src="${mutant.image}" class="card-img-top">
+				<img src="${m.image}" class="card-img-top">
 
 				<div class="card-body">
-					<h5 class="card-title text-center mb-3">
-						${mutant.name.alias}
-					</h5>
+					<h5 class="card-title text-center">${m.name.alias}</h5>
+					<p class="text-center text-muted">${m.name.firstName} ${m.name.lastName}</p>
 
-					<p class="card-text text-center text-muted">
-						${mutant.name.firstName} ${mutant.name.lastName}
-					</p>
-
-					<h6 class="fw-bold">Profile</h6>
-					<ul class="list-unstyled">
-						<li>Gender: ${mutant.profile.gender}</li>
-						<li>Eyes: ${mutant.profile.eyes}</li>
-						<li>Hair: ${mutant.profile.hair}</li>
-						<li>Height: ${mutant.profile.height}</li>
+					<h6>Profile</h6>
+					<ul>
+						<li>Gender: ${m.profile.gender}</li>
+						<li>Eyes: ${m.profile.eyes}</li>
+						<li>Hair: ${m.profile.hair}</li>
+						<li>Height: ${m.profile.height}</li>
 					</ul>
 
-					<h6 class="fw-bold">Powers</h6>
-					<ul class="list-unstyled">
-						${powersList}
+					<h6>Powers</h6>
+					<ul>
+						${m.powers.map(p => `<li>${p}</li>`).join("")}
 					</ul>
 
-					<h6 class="fw-bold">Affiliation</h6>
+					<h6>Affiliation</h6>
 					<ul class="list-inline">
-						${affiliationList}
+						${m.affiliation.map(a => `<li class="list-inline-item badge bg-primary">${a}</li>`).join("")}
 					</ul>
-
 				</div>
 			</div>
 		</div>
 		`;
 
-		container.insertAdjacentHTML("beforeend", html);
-
+		row.insertAdjacentHTML("beforeend", html);
 	});
-
 }
 
 loadDataSource();
